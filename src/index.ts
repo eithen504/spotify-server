@@ -16,7 +16,7 @@ const app = express()
 const port = 3000
 
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173', 'https://spotify-six-indol.vercel.app/'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true, // if you want to send cookies
 }))

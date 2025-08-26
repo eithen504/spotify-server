@@ -31,13 +31,11 @@ export const verifyGoogleToken = async (req: Request, res: Response) => {
 
         const userToken = JWTService.generateTokenForUser(user.id, user.email);
 
-        console.log("process.env.APP_ENV", process.env.APP_ENV);
-        
         // Set the JWT in an HttpOnly cookie
         res.cookie("SPOTIFY_TOKEN", userToken, {
             httpOnly: true,
-            secure: process.env.APP_ENV === "production", // send cookie over HTTPS in production
-            sameSite: "strict", // or 'strict' depending on your CSRF policy
+            secure: process.env.APP_ENV === "production",
+            sameSite: "none", 
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         });
 
@@ -55,7 +53,7 @@ export const logoutUser = async (req: Request, res: Response) => {
         res.clearCookie("SPOTIFY_TOKEN", {
             httpOnly: true,
             secure: process.env.APP_ENV === "production",
-            sameSite: "strict"
+            sameSite: "none"
         });
 
         res.status(200).json({ message: "Logged out successfully" });

@@ -31,6 +31,8 @@ export const verifyGoogleToken = async (req: Request, res: Response) => {
 
         const userToken = JWTService.generateTokenForUser(user.id, user.email);
 
+        console.log("process.env.APP_ENV", process.env.APP_ENV);
+        
         // Set the JWT in an HttpOnly cookie
         res.cookie("SPOTIFY_TOKEN", userToken, {
             httpOnly: true,

@@ -5,7 +5,6 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from "cookie-parser";
 import cloudinaryConfig from './config/cloudinary'
-import { ALLOWED_ORIGIN } from './config/env'
 
 dotenv.config()
 
@@ -13,7 +12,7 @@ const app = express()
 const port = 3000
 
 app.use(cors({
-    origin: [ALLOWED_ORIGIN],
+    origin: [process.env.ALLOWED_ORIGIN as string],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true, // if you want to send cookies
 }))

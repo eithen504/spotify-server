@@ -3,7 +3,6 @@ import axios from 'axios'
 import { GoogleTokenResult } from "../types";
 import User from "../models/user.model";
 import JWTService from "../services/jwt";
-import { NODE_ENV } from "../config/env";
 
 export const verifyGoogleToken = async (req: Request, res: Response) => {
     try {
@@ -35,7 +34,7 @@ export const verifyGoogleToken = async (req: Request, res: Response) => {
         // Set the JWT in an HttpOnly cookie
         res.cookie("SPOTIFY_TOKEN", userToken, {
             httpOnly: true,
-            secure: NODE_ENV as string === "production", // send cookie over HTTPS in production
+            secure: process.env.NODE_ENV as string === "production", // send cookie over HTTPS in production
             sameSite: "strict", // or 'strict' depending on your CSRF policy
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         });
@@ -53,7 +52,7 @@ export const logoutUser = async (req: Request, res: Response) => {
         // clear the cookie
         res.clearCookie("SPOTIFY_TOKEN", {
             httpOnly: true,
-            secure: NODE_ENV === "production",
+            secure: process.env.NODE_ENV as string === "production",
             sameSite: "strict"
         });
 

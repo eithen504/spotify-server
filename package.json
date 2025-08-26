@@ -4,7 +4,7 @@
   "main": "build/index.js",
   "scripts": {
     "start": "node build/index",
-    "build": "tsc --skipLibCheck",
+    "build:prod": "tsc --noEmit false --skipLibCheck true",
     "dev": "tsc-watch --onSuccess \"npm start\""
   },
   "keywords": [],

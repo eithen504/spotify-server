@@ -34,7 +34,7 @@ export const verifyGoogleToken = async (req: Request, res: Response) => {
         // Set the JWT in an HttpOnly cookie
         res.cookie("SPOTIFY_TOKEN", userToken, {
             httpOnly: true,
-            secure: process.env.APP_ENV as string === "production", // send cookie over HTTPS in production
+            secure: process.env.APP_ENV === "production", // send cookie over HTTPS in production
             sameSite: "strict", // or 'strict' depending on your CSRF policy
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         });
@@ -52,7 +52,7 @@ export const logoutUser = async (req: Request, res: Response) => {
         // clear the cookie
         res.clearCookie("SPOTIFY_TOKEN", {
             httpOnly: true,
-            secure: process.env.APP_ENV as string === "production",
+            secure: process.env.APP_ENV === "production",
             sameSite: "strict"
         });
 

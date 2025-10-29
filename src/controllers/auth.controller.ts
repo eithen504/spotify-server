@@ -44,7 +44,7 @@ const verifyGoogleToken = async (req: Request, res: Response) => {
         res.cookie("SPOTIFY_TOKEN", userToken, {
             httpOnly: true,
             secure: process.env.APP_ENV === "production",
-            sameSite: "lax",
+            sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         });
 
@@ -62,7 +62,7 @@ const logoutUser = async (req: Request, res: Response) => {
         res.clearCookie("SPOTIFY_TOKEN", {
             httpOnly: true,
             secure: process.env.APP_ENV === "production",
-            sameSite: "lax"
+            sameSite: "none"
         });
 
         res.status(200).json({ message: "Logged out successfully" });

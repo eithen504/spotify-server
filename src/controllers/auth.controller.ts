@@ -4,7 +4,16 @@ import { GoogleTokenResult } from "../types";
 import User from "../models/user.model";
 import JWTService from "../services/jwt";
 
-export const verifyGoogleToken = async (req: Request, res: Response) => {
+const checkAuth = async (req: Request, res: Response) => {
+    try {
+        res.status(200).json((req as any).user);
+    } catch (error: any) {
+        console.error("Error in checkAuth:", error)
+        res.status(500).json({ errorMessage: "Internal Server Error" });
+    }
+}
+
+const verifyGoogleToken = async (req: Request, res: Response) => {
     try {
         const { token } = req.body
         const googleOauthURL = new URL("https://oauth2.googleapis.com/tokeninfo");
@@ -17,14 +26,14 @@ export const verifyGoogleToken = async (req: Request, res: Response) => {
             }
         );
 
-        const { email, name } = data
-
+        const { email } = data
+        
         let user = await User.findOne({ email });
 
         if (!user) {
             user = await User.create({
                 email,
-                displayName: name,
+                displayName: email.split('@')[0],
                 avatarUrl: "",
             });
         }
@@ -35,7 +44,7 @@ export const verifyGoogleToken = async (req: Request, res: Response) => {
         res.cookie("SPOTIFY_TOKEN", userToken, {
             httpOnly: true,
             secure: process.env.APP_ENV === "production",
-            sameSite: "none", 
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         });
 
@@ -43,31 +52,28 @@ export const verifyGoogleToken = async (req: Request, res: Response) => {
         res.status(500).json({ data: user, message: "Login successful" });
     } catch (error) {
         console.error("Error in verifyGoogleToken:", error)
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ errorMessage: "Internal server error" });
     }
 }
 
-export const logoutUser = async (req: Request, res: Response) => {
+const logoutUser = async (req: Request, res: Response) => {
     try {
         // clear the cookie
         res.clearCookie("SPOTIFY_TOKEN", {
             httpOnly: true,
             secure: process.env.APP_ENV === "production",
-            sameSite: "none"
+            sameSite: "lax"
         });
 
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
         console.error("Error in logoutUser:", error)
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ errorMessage: "Internal server error" });
     }
 };
 
-export const checkAuth = async (req: Request, res: Response) => {
-    try {
-        res.status(200).json((req as any).user);
-    } catch (error: any) {
-        console.log("Error in checkAuth controller", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
+export {
+    checkAuth,
+    verifyGoogleToken,
+    logoutUser
 }

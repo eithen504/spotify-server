@@ -23,8 +23,7 @@ export interface JWTUser {
   email: string;
 }
 
-export type GenreTitle =
-  | "Hindi"
+export type Genre =
   | "Party"
   | "Chill"
   | "Summer"
@@ -43,3 +42,10 @@ export type GenreTitle =
   | "Rain & Monsoon"
   | "Lofi"
   | "Nature & Noise";
+
+export type Genres = Genre[];
+
+export type GenresIdTitleMap = Record<string, Genre>;
+
+export type Visibility = "Public" | "Private";
+export type Visibilities = Visibility[]

@@ -28,7 +28,6 @@ export const protectRoute = async (req: Request, res: Response, next: NextFuncti
         (req as any).user = user;
         next();
     } catch (error: any) {
-        console.log("error", error.message);
         (req as any).user = null;
         next();
     }

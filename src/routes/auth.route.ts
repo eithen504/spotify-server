@@ -4,8 +4,8 @@ import { protectRoute } from '../middlewares/auth.middleware';
 
 const router = express.Router()
 
+router.get("/checkAuth", protectRoute, checkAuth);
 router.post("/verify-google-token", verifyGoogleToken);
 router.post("/logout-user", logoutUser);
-router.get("/checkAuth", protectRoute, checkAuth);
 
 export default router

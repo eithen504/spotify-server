@@ -21,7 +21,7 @@ const port = 3000
 app.use(cors({
     origin: [process.env.ALLOWED_ORIGIN as string],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    credentials: true, // if you want to send cookies
+    credentials: true,
 }))
 
 app.use(json({ limit: '25mb' }))

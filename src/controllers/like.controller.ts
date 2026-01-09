@@ -57,7 +57,7 @@ const getLikedTracks = async (req: Request, res: Response) => {
             audioUrl: like.trackId?.audioUrl,
             artist: like.trackId?.artist,
             duration: like.trackId?.duration,
-            genre: like.trackId?.genre,
+            genres: like.trackId?.genres,
             albumId: like.trackId?.albumId?._id,
             albumName: like.trackId?.albumId?.title || 'album name', // Get album name or empty string if no album
             language: like.trackId?.language,

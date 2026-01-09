@@ -26,9 +26,9 @@ const getSuggestedTracks = async (req: Request, res: Response) => {
                     audioUrl: track.audioUrl,
                     artist: track.artist,
                     duration: track.duration,
-                    genre: track.genre,
                     albumId: track.albumId,
                     albumName: "",
+                    languages: track.languages,
                     hasLiked: !!likeDoc,
                     createdAt: track.createdAt,
                     updatedAt: track.updatedAt,
@@ -51,9 +51,8 @@ const uploadTrack = async (req: Request, res: Response) => {
             audioUrl,
             artist,
             duration,
-            genre,
             albumId,
-            language
+            languages
         }
     } = req.body;
 
@@ -74,9 +73,8 @@ const uploadTrack = async (req: Request, res: Response) => {
             audioUrl: uploadAudioResult.secure_url || "",
             artist,
             duration,
-            genre,
             albumId,
-            language
+            languages
         })
 
         res.status(200).json(track);
@@ -108,10 +106,9 @@ const getTrack = async (req: Request, res: Response) => {
             audioUrl: track.audioUrl,
             artist: track.artist,
             duration: track.duration,
-            genre: track.genre,
             albumId: track.albumId,
             albumName: "",
-            language: track.language,
+            languages: track.languages,
             hasLiked,
             createdAt: track.createdAt,
             updatedAt: track.updatedAt,
@@ -141,8 +138,6 @@ const updateTrack = async (req: Request, res: Response) => {
         if (uploadImageResult?.secure_url) {
             updateFields.coverImageUrl = uploadImageResult.secure_url;
         }
-
-        console.log("updateFields", updateFields);
 
         // Update track
         const track = await Track.findByIdAndUpdate(

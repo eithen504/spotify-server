@@ -1,3 +1,5 @@
+import { GENRES_ID_TITLE_MAP, LANGUAGES } from "./constants";
+
 export interface GoogleTokenResult {
   iss?: string;
   nbf?: string;
@@ -23,29 +25,9 @@ export interface JWTUser {
   email: string;
 }
 
-export type Genre =
-  | "Party"
-  | "Chill"
-  | "Summer"
-  | "Love"
-  | "Emotional & HeartBreaking"
-  | "Road Trip"
-  | "Sleep"
-  | "Strees Relief"
-  | "Instrumental"
-  | "Happy"
-  | "workout"
-  | "Focus"
-  | "Dance"
-  | "Cooking"
-  | "Travel"
-  | "Rain & Monsoon"
-  | "Lofi"
-  | "Nature & Noise";
+export type GenreId = keyof typeof GENRES_ID_TITLE_MAP;
 
-export type Genres = Genre[];
-
-export type GenresIdTitleMap = Record<string, Genre>;
+export type Language = typeof LANGUAGES[number];
 
 export type Visibility = "Public" | "Private";
 export type Visibilities = Visibility[]

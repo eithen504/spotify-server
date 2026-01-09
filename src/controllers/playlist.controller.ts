@@ -6,13 +6,14 @@ import Like from "../models/like.model";
 import SavePlaylist from "../models/save.playlist.model";
 import mongoose from "mongoose";
 import { GENRES_ID_TITLE_MAP } from "../constants";
+import { GenreId } from "../types";
 
 const getFeedPlaylists = async (req: Request, res: Response) => {
     const adminId = process.env.ADMIN_ID
 
     try {
         const playlists = await Playlist.find({ userId: adminId })
-            .limit(24); // Limit to 24 results
+            .limit(500); // Limit to 24 results
 
         res.status(200).json(playlists);
     } catch (error) {
@@ -26,7 +27,7 @@ const getCurrentUserPlaylists = async (req: Request, res: Response) => {
 
     try {
         const playlists = await Playlist.find({ userId: currentUser._id })
-            .limit(24); // Limit to 24 results
+            .limit(200); // Limit to 24 results
 
         res.status(200).json(playlists);
     } catch (error) {
@@ -75,7 +76,7 @@ const getRecentPlaylists = async (req: Request, res: Response) => {
                 title: "Liked Tracks",
                 coverImageUrl: "https://misc.scdn.co/liked-songs/liked-songs-300.jpg",
                 userId: currentUser?._id,
-                genere: [],
+                genres: [],
                 tracks: [],
                 createdAt: new Date(),
                 updatedAt: new Date(),
@@ -92,7 +93,7 @@ const getRecentPlaylists = async (req: Request, res: Response) => {
 
 const getGenrePlaylists = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const genre = GENRES_ID_TITLE_MAP[id || ""];
+    const genre = GENRES_ID_TITLE_MAP[id as GenreId];
 
     if (!genre) {
         return res.status(404).json({ error: "Genre not found" });
@@ -101,7 +102,7 @@ const getGenrePlaylists = async (req: Request, res: Response) => {
     try {
         const playlists = await Playlist.find({
             genres: { $in: genre }
-        }).limit(24);
+        }).limit(200);
 
         res.status(200).json(playlists);
     } catch (error) {
@@ -130,7 +131,7 @@ const addItemsToPlaylist = async (req: Request, res: Response) => {
         }
 
         const totalTracks = playlist.tracks.length + trackIds.length;
-        if (totalTracks > 20) {
+        if (totalTracks > 25) {
             return res.status(400).json({ errorMessage: "Playlist cannot have more than 20 tracks" });
         }
 
@@ -211,7 +212,7 @@ const getPlaylistTracks = async (req: Request, res: Response) => {
             genre: track.genre,
             albumId: track.albumId._id,
             albumName: track.albumId.title,
-            language: track.language,
+            languages: track.languages,
             hasLiked: likedTrackIds.has(track._id.toString()),
             createdAt: track.createdAt,
             updatedAt: track.updatedAt,

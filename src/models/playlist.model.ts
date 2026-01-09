@@ -1,5 +1,5 @@
 import { model, Schema, Types } from "mongoose"
-import { GENRES, VISIBILITIES } from "../constants";
+import { GENRE_TITLES, VISIBILITIES } from "../constants";
 
 const playlistSchema = new Schema(
     {
@@ -18,7 +18,7 @@ const playlistSchema = new Schema(
         genres: [
             {
                 type: String,
-                enum: GENRES,
+                enum: GENRE_TITLES,
             },
         ],
         tracks: [

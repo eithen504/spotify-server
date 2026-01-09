@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { GENRES } from "../constants";
+import { LANGUAGES } from "../constants";
 
 const trackSchema = new Schema(
     {
@@ -20,21 +20,15 @@ const trackSchema = new Schema(
         duration: {
             type: Number,
         },
-        genre: [
-            {
-                type: String,
-                enum: GENRES, // restrict to your Genre union
-            },
-        ],
         albumId: {
             type: Schema.Types.ObjectId,
             ref: "Album",
             default: null,
         },
-        language: {
+        languages: [{
             type: String,
-            default: "English"
-        }
+            enum: LANGUAGES,
+        }]
     },
     { timestamps: true }
 );

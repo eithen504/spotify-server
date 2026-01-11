@@ -6,6 +6,11 @@ const getCurrentUserFolders = async (req: Request, res: Response) => {
     const currentUser = (req as any).user;
 
     try {
+        if (!currentUser) {
+            res.status(404).json({ errorMessage: "Please login/signup" });
+            return;
+        }
+
         const folders = await Folder.find({ userId: currentUser._id })
             .limit(24).sort({ createdAt: -1 }); // Limit to 24 results
 

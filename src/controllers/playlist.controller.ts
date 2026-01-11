@@ -131,8 +131,8 @@ const addItemsToPlaylist = async (req: Request, res: Response) => {
         }
 
         const totalTracks = playlist.tracks.length + trackIds.length;
-        if (totalTracks > 25) {
-            return res.status(400).json({ errorMessage: "Playlist cannot have more than 20 tracks" });
+        if (totalTracks > 30) {
+            return res.status(400).json({ errorMessage: "Playlist cannot have more than 30 tracks" });
         }
 
         playlist.tracks.push(...trackIds);

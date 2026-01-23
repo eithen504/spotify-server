@@ -27,7 +27,7 @@ const verifyGoogleToken = async (req: Request, res: Response) => {
         );
 
         const { email } = data
-        
+
         let user = await User.findOne({ email });
 
         if (!user) {
@@ -45,7 +45,7 @@ const verifyGoogleToken = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: process.env.APP_ENV === "production",
             sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+            maxAge: 20 * 24 * 60 * 60 * 1000, // 20 days
         });
 
         // Send response

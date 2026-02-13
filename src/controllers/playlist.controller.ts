@@ -25,16 +25,20 @@ const getFeedPlaylists = async (req: Request, res: Response) => {
 const getCurrentUserPlaylists = async (req: Request, res: Response) => {
     const currentUser = (req as any).user;
 
+    if (!currentUser) {
+        return res.status(401).json({ errorMessage: "Unauthorized" });
+    }
+
     try {
         const playlists = await Playlist.find({ userId: currentUser._id })
-            .limit(200); // Limit to 24 results
+            .limit(500);
 
-        res.status(200).json(playlists);
+        return res.status(200).json(playlists);
     } catch (error) {
         console.error("Error in getCurrentUserPlaylists:", error);
-        res.status(500).json({ errorMessage: "Internal server error" });
+        return res.status(500).json({ errorMessage: "Internal server error" });
     }
-}
+};
 
 const getRecentPlaylists = async (req: Request, res: Response) => {
     const currentUser = (req as any).user;
@@ -42,6 +46,10 @@ const getRecentPlaylists = async (req: Request, res: Response) => {
     let playlistIds = Array.isArray(ids) ? ids : [ids];
     let collectionId = "collectionTracks"
     let collectionIndex = -1;
+
+    if (!currentUser) {
+        return res.status(401).json({ errorMessage: "Unauthorized" });
+    }
 
     playlistIds = playlistIds.filter((id) => {
         if (id == collectionId) {

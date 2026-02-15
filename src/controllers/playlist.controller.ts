@@ -9,11 +9,28 @@ import { GENRES_ID_TITLE_MAP } from "../constants";
 import { GenreId } from "../types";
 
 const getFeedPlaylists = async (req: Request, res: Response) => {
-    const adminId = process.env.ADMIN_ID
+    const adminId = process.env.ADMIN_ID;
+    const page = Number(req.query.page) || 1;
+
+    const firstPageLimit = 24;
+    const otherPageLimit = 16;
+
+    const limit =
+        Number(req.query.limit) ||
+        (page === 1 ? firstPageLimit : otherPageLimit);
+
+    let skip = 0;
+
+    if (page === 1) {
+        skip = 0;
+    } else {
+        skip = firstPageLimit + (page - 2) * otherPageLimit;
+    }
 
     try {
         const playlists = await Playlist.find({ userId: adminId })
-            .limit(500); // Limit to 24 results
+            .skip(skip)
+            .limit(limit);
 
         res.status(200).json(playlists);
     } catch (error) {
